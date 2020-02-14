@@ -1,22 +1,24 @@
 #include <iostream>
+#include <ctime>
 
-void PrintIntroduction()
+void PrintIntroduction(int Difficulty)
 {
 //This is the welcoming message
     std::cout;
-    std::cout << "+ You're a anti-bomb agent defusing a bomb.\n";
-    std::cout << "+ You need to enter the correct code to still alive and possibly defuse this bomb...\n\n";
+    std::cout << "You're a anti-bomb agent defusing a bomb level " << Difficulty << ".\n";
+    std::cout << "You need to enter the correct code to still alive and possibly defuse this bomb...\n\n";
 
 }
 
-bool PlayGame() //The term "VOID" means that this function will return no data, thats why we don't use "return 0" in the end.
+//The term "VOID" means that this function will return no data, thats why we don't use "return 0" in the end.
+bool PlayGame(int Difficulty) 
 {
-    PrintIntroduction();
+    PrintIntroduction(Difficulty);
     
     //Declare the constant code
-    const int CodeA = 4;
-    const int CodeB = 6;
-    const int CodeC = 7;
+    const int CodeA = rand() % Difficulty + Difficulty;
+    const int CodeB = rand() % Difficulty + Difficulty;
+    const int CodeC = rand() % Difficulty + Difficulty;
 
     //Declare three number code
     const int CodeSum = CodeA + CodeB + CodeC;
@@ -47,19 +49,33 @@ bool PlayGame() //The term "VOID" means that this function will return no data, 
     }
     else 
     {
-        std::cout << "\n\n+++ Wrong answer, the bomb detonates. +++\n\n";
+        std::cout << "\n\n+++ Wrong answer, the bomb detonates!! TRY AGAIN +++\n\n";
         return false;
     } 
 }
 
 int main()
 {
-    while(true)
+    srand(time(NULL)); //Create new random sequence based on time of day
+
+    int LevelDifficulty = 1;
+    const int MaxLevel = 5;
+    
+    while (LevelDifficulty <= MaxLevel) //Loop the game until all levels are completed
     {
-        bool bLevelComplete = PlayGame();
+        bool bLevelComplete = PlayGame(LevelDifficulty);
 
         std::cin.clear();  //Clears any errors
         std::cin.ignore();  //Discards the buffer
+
+        if (bLevelComplete)
+        {
+            ++LevelDifficulty;
+        }
     }
+        std::cout << "\n+++++++++++++++++++++++++++++++++++++++++++++++\n";
+        std::cout << "Great job!! You have defused the bomb! Now get out of there.\n";
+        std::cout << "+++++++++++++++++++++++++++++++++++++++++++++++\n\n";
+
     return 0;
 }
